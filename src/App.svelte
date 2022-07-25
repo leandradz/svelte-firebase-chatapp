@@ -1,21 +1,21 @@
 <script>
   import { auth, googleProvider } from "./firebase";
   import { authState } from "rxfire/auth";
-  
+
   import Chatroom from "./Chatroom.svelte";
 
   let user;
 
   const unsubscribe = authState(auth).subscribe((u) => (user = u));
 
-  function login() {
+  const login = () => {
     auth.signInWithPopup(googleProvider);
-  }
+  };
 </script>
 
 <main>
   {#if user}
-    <Chatroom {user} {logout} />
+    <Chatroom {user} logout={() => auth.signOut()} />
   {:else}
     <div class="login-form">
       <button on:click={login}>
@@ -50,17 +50,20 @@
 
   .login-form button {
     padding: 10px;
-    background-color: #fff;
-    color: #111;
+    background-color: #D0463B;
+    color: #fff;
     font-size: 16px;
     cursor: pointer;
     outline: none;
     border: 1px solid #bbb;
   }
+  .login-form button:hover {
+    background-color: #cd3328;
+  }
 
   .login-form button i.fa {
     padding-right: 10px;
     border-right: 1px solid #ddd;
-    color: #555;
+    color: #fff;
   }
 </style>
